@@ -5,7 +5,7 @@ import com.santana.agencia.model.enums.TipoModal;
 
 public class ModalFactory {
 
-    public static Modal criarModal(TipoModal tipo) {
+    public static Modal criarModal(Modal tipo) {
         Modal modal = new Modal();
         modal.setTipo(tipo.name());
         
@@ -29,7 +29,7 @@ public class ModalFactory {
         return modal;
     }
 
-    public static Modal criarModalPersonalizado(TipoModal tipo, double preco) {
+    public static Modal criarModalPersonalizado(Modal tipo, double preco) {
         Modal modal = new Modal();
         modal.setTipo(tipo.name());
         modal.setPreco(preco);

@@ -1,11 +1,12 @@
 package com.santana.agencia.model.entity;
 
-
-import com.santana.agencia.dto.EstatisticasDTO;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
+
+
+
 
 public class Agencia {
     private static volatile Agencia instance;
@@ -20,7 +21,9 @@ public class Agencia {
     private final Map<Long, Passageiro> passageiros = new ConcurrentHashMap<>();
     private final Map<Long, ModalFornecedor> modalFornecedores = new ConcurrentHashMap<>();
     private final Map<Long, Multa> multas = new ConcurrentHashMap<>();
-    
+    private String nome;
+    private String cnpj;
+
     // Contadores de ID atômicos
     private final AtomicLong clienteIdCounter = new AtomicLong(1);
     private final AtomicLong pacoteIdCounter = new AtomicLong(1);
@@ -198,15 +201,15 @@ public class Agencia {
     // =============================================
     // MÉTODOS DE RELATÓRIOS E ESTATÍSTICAS
     // =============================================
-    public EstatisticasDTO gerarEstatisticas() {
-        return new EstatisticasDTO(
-                (long) clientes.size(),
-                (long) viagens.size(),
-                (long) pacotes.size(),
-                calcularFaturamentoTotal(),
-                contarClientesAtivos(),
-                contarViagensDisponiveis()
-        );
+    public Map<String, Object> gerarEstatisticas() {
+        Map<String, Object> estatisticas = new HashMap<>();
+        estatisticas.put("totalClientes", (long) clientes.size());
+        estatisticas.put("totalViagens", (long) viagens.size());
+        estatisticas.put("totalPacotes", (long) pacotes.size());
+        estatisticas.put("faturamentoTotal", calcularFaturamentoTotal());
+        estatisticas.put("clientesAtivos", contarClientesAtivos());
+        estatisticas.put("viagensDisponiveis", contarViagensDisponiveis());
+        return estatisticas;
     }
 
     public Double calcularFaturamentoTotal() {
@@ -258,5 +261,23 @@ public class Agencia {
         passageiroIdCounter.set(1);
         modalFornecedorIdCounter.set(1);
         multaIdCounter.set(1);
+    }
+
+    // Getter e setter para nome
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    // Getter e setter para cnpj
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
     }
 }

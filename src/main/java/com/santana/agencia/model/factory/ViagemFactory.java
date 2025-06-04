@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 public class ViagemFactory {
 
-    public static Viagem criarViagem(TipoViagem tipo, Pacote pacote, Modal modal, Fornecedor fornecedor) {
+    public static Viagem criarViagem(Viagem tipo, Pacote pacote, Modal modal, Fornecedor fornecedor) {
         Viagem viagem = new Viagem();
         viagem.setPacote(pacote);
         viagem.setModal(modal);
