@@ -1,14 +1,16 @@
     package com.santana.agencia.model.entity;
 
-import java.time.LocalDate;
+    import java.io.Serializable;
+    import java.time.LocalDate;
     import java.util.*;
     import java.util.concurrent.ConcurrentHashMap;
     import java.util.concurrent.atomic.AtomicLong;
     import java.util.stream.Collectors;
+    import javax.persistence.Entity;
 
 
 
-
+    @Entity
     public class Agencia {
         private static volatile Agencia instance;
 

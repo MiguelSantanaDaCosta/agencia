@@ -1,11 +1,12 @@
 package com.santana.agencia.model.entity;
 
+import java.io.Serializable;
 import javax.persistence.*;
 
 import java.util.List;
 
 @Entity
-public class Cliente extends Usuario {
+public class Cliente extends Usuario  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
