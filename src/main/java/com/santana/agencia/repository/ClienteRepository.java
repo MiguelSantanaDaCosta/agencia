@@ -21,11 +21,11 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     @Query("SELECT c FROM Cliente c WHERE LOWER(c.nome) LIKE LOWER(CONCAT('%', :nome, '%'))")
     List<Cliente> findByNomeContainingIgnoreCase(String nome);
     
-    @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END " +
+    @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END " +
            "FROM Cliente c WHERE c.email = :email")
     boolean existsByEmail(String email);
     
-    @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END " +
+    @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END " +
            "FROM Cliente c WHERE c.cpf = :cpf")
     boolean existsByCpf(String cpf);
 }
