@@ -40,11 +40,6 @@
     .navbar-brand{
         font-size: 24px;
     }
-    .login-error {
-      color: #dc3545;
-      font-size: 0.875em;
-      margin-top: 0.25rem;
-    }
     .cpf-mask {
       font-family: monospace;
     }
@@ -64,27 +59,49 @@
           <a class="nav-link active" href="Agencia.html">Início</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="Destinos.html">Destinos</a>
+          <a class="nav-link" href="Clientes.html">Clientes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="modal" data-bs-target="#modal">Contato</a>
+          <a class="nav-link" href=".html"></a>
         </li>
       </ul>
       <div class="d-flex">
-        <button class="btn btn-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
-        <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#cadastroModal">Cadastre-se</button>
+        <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#cadastroModal">Cadastro Cliente</button>
       </div>
     </div>
   </div>
 </nav>
 
-<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-          <div class="modal-body">
-            Esta funcionalidade ainda não está disponível.
-          </div>
+<div th:each="viagem, iter : ${viagens}">
+  <div class="modal fade" th:id="'modalPassageiros' + ${iter.index}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Passageiros da Viagem para <span th:text="${viagem.destino}"></span></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+              <th class="text-center">Nome</th>
+              <th class="text-center">CPF</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${viagem.passageiros}">
+              <td class="text-center" th:text="${p.nome}"></td>
+              <td class="text-center" th:text="${p.cpf}"></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(viagem.passageiros)}">
+              <td colspan="2" class="text-center text-muted">Nenhum passageiro cadastrado.</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
       </div>
     </div>
   </div>
@@ -146,52 +163,10 @@
   </div>
 </div>
 
-<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="loginModalLabel">Acesse sua conta</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="formLogin">
-          <div class="mb-3">
-            <label for="loginCpf" class="form-label">CPF</label>
-            <input type="text" class="form-control cpf-mask"
-                   id="loginCpf" name="cpf"
-                   th:value="${#httpServletRequest.remoteUser != null ? #httpServletRequest.remoteUser : ''}"
-                   placeholder="000.000.000-00" required>
-            <div class="invalid-feedback" id="cpfError">Por favor, insira um CPF válido</div>
-          </div>
-          <div class="mb-3">
-            <label for="loginSenha" class="form-label">Senha</label>
-            <input type="password" class="form-control"
-                   id="loginSenha" name="senha" required>
-            <div class="invalid-feedback" id="senhaError">Por favor, insira sua senha</div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="submit" class="btn btn-primary" form="formLogin">Entrar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="hero-section text-center">
   <div class="container">
-    <h1 class="display-4">Descubra seu próximo destino</h1>
+    <h1 class="display-4">ViajeMais</h1>
     <p class="lead">Encontre as melhores ofertas para suas férias dos sonhos</p>
-
-    <form class="row g-3 justify-content-center mt-4">
-      <div class="col-md-4">
-        <input type="text" class="form-control form-control-lg" placeholder="Para onde?">
-      </div>
-      <div class="col-md-2">
-        <button type="submit" class="btn btn-primary btn-lg w-100">Buscar</button>
-      </div>
-    </form>
   </div>
 </div>
 
@@ -217,22 +192,26 @@
     <table class="table table-hover align-middle">
       <thead class="table-light">
       <tr>
-        <th>Destino</th>
-        <th>Preço</th>
-        <th>Status</th>
-        <th>Ações</th>
+        <th class="text-center">Destino</th>
+        <th class="text-center">Preço</th>
+        <th class="text-center">Status</th>
+        <th class="text-center">Ações</th>
       </tr>
       </thead>
       <tbody>
-      <tr th:each="viagem : ${viagens}">
-        <td th:text="${viagem.destino}"></td>
-        <td th:text="'R$ ' + ${viagem.preco}" class="preco"></td>
-        <td>
+      <tr th:each="viagem : ${viagens}" >
+        <td th:text="${viagem.destino}" class="text-center"></td>
+        <td th:text="'R$ ' + ${viagem.preco}" class="preco text-center"></td>
+        <td class="text-center">
           <span th:if="${viagem.disponivel}" class="status-disponivel"></span>
           <span th:unless="${viagem.disponivel}" class="status-esgotado"></span>
         </td>
-        <td>
-          <button class="btn btn-primary btn-sm">Reservar</button>
+        <td class="text-center">
+          <button class="btn btn-primary"
+                  data-bs-toggle="modal"
+                  th:attr="data-bs-target='#modalPassageiros' + ${iter.index}">
+            Ver Passageiros
+          </button>
         </td>
       </tr>
       </tbody>
