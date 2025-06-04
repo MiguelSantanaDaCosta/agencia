@@ -1,0 +1,27 @@
+[0;1;32m●[0m pipewire.service - PipeWire Multimedia Service
+     Loaded: loaded (]8;;file://santana/usr/lib/systemd/user/pipewire.service\/usr/lib/systemd/user/pipewire.service]8;;\; [0;1;38:5:185mdisabled[0m; preset: [0;1;32menabled[0m)
+     Active: [0;1;32mactive (running)[0m since Thu 2025-05-29 12:02:57 -03; 8h ago
+ Invocation: 2ad6636c16b84543b55bd1879def5822
+TriggeredBy: [0;1;32m●[0m pipewire.socket
+   Main PID: 252976 (pipewire)
+      Tasks: 3[0;38;5;245m (limit: 8660)[0m
+     Memory: 11.5M (peak: 13.7M, swap: 872K, swap peak: 1.5M)
+        CPU: 38.309s
+     CGroup: /user.slice/user-1000.slice/user@1000.service/session.slice/pipewire.service
+             └─[0;38;5;245m252976 /usr/bin/pipewire[0m
+
+mai 29 12:02:57 santana systemd[252954]: Started PipeWire Multimedia Service.
+
+[0;1;32m●[0m pipewire-pulse.service - PipeWire PulseAudio
+     Loaded: loaded (]8;;file://santana/usr/lib/systemd/user/pipewire-pulse.service\/usr/lib/systemd/user/pipewire-pulse.service]8;;\; [0;1;32menabled[0m; preset: [0;1;32menabled[0m)
+     Active: [0;1;32mactive (running)[0m since Thu 2025-05-29 12:02:57 -03; 8h ago
+ Invocation: feb72bac91b5452ab2d6216cbcdcc0c2
+TriggeredBy: [0;1;32m●[0m pipewire-pulse.socket
+   Main PID: 252980 (pipewire-pulse)
+      Tasks: 3[0;38;5;245m (limit: 8660)[0m
+     Memory: 17M (peak: 21.6M, swap: 316K, swap peak: 728K)
+        CPU: 55.469s
+     CGroup: /user.slice/user-1000.slice/user@1000.service/session.slice/pipewire-pulse.service
+             └─[0;38;5;245m252980 /usr/bin/pipewire-pulse[0m
+
+mai 29 12:02:57 santana systemd[252954]: Started PipeWire PulseAudio.

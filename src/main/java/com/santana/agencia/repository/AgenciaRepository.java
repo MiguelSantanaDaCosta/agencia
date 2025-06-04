@@ -1,0 +1,50 @@
+package com.santana.agencia.repository;
+
+import com.santana.agencia.model.entity.Agencia;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public interface AgenciaRepository extends JpaRepository<Agencia, Long> {
+
+    // Busca pelo CNPJ único
+    Optional<Agencia> findByCnpj(String cnpj);
+
+    // Consultas para estatísticas
+    @Query("SELECT COUNT(c) FROM Cliente c")
+    Long countClientes();
+
+    @Query("SELECT COUNT(v) FROM Viagem v")
+    Long countViagens();
+
+    @Query("SELECT COUNT(p) FROM Pacote p")
+    Long countPacotes();
+
+    @Query("SELECT SUM(c.valor) FROM Compra c")
+    Double calcularFaturamentoTotal();
+
+    // Verificação de CNPJ único para atualização
+    @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END " +
+           "FROM Agencia a WHERE a.cnpj = :cnpj AND a.id <> :id")
+    boolean existsByCnpjAndNotId(String cnpj, Long id);
+
+    // Consulta para verificar se a agência principal existe
+    @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END " +
+           "FROM Agencia a WHERE a.id = 1")
+    boolean existsAgenciaPrincipal();
+
+    // Consulta para obter o faturamento por período
+    @Query("SELECT SUM(c.valor) FROM Compra c WHERE c.data BETWEEN :dataInicio AND :dataFim")
+    Optional<Double> calcularFaturamentoPeriodo(java.time.LocalDate dataInicio, java.time.LocalDate dataFim);
+
+    // Consulta para contar clientes ativos
+    @Query("SELECT COUNT(c) FROM Cliente c WHERE c.status = true")
+    Long countClientesAtivos();
+
+    // Consulta para contar viagens com vagas disponíveis
+    @Query("SELECT COUNT(v) FROM Viagem v WHERE v.vagas > 0")
+    Long countViagensDisponiveis();
+}
