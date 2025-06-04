@@ -7,7 +7,8 @@
     import org.springframework.stereotype.Service;
 
     import com.santana.agencia.exception.CPFAlreadyExistsException;
-    import com.santana.agencia.model.entity.Cliente;
+import com.santana.agencia.exception.ClienteNotFoundException;
+import com.santana.agencia.model.entity.Cliente;
     import com.santana.agencia.repository.ClienteRepository;
 
     /**
@@ -35,7 +36,12 @@
       }
 
       public Cliente atualizar(Long id, Cliente clienteAtualizado) {
+        Optional<Cliente> clienteAchado = clienteRepository.findById(id);
+        if (clienteAchado.isEmpty()) {
+          throw new ClienteNotFoundException();
+        }
         clienteAtualizado.setId(id);
+        clienteAtualizado.setCpf(clienteAchado.get().getCpf());
         return clienteRepository.save(clienteAtualizado);
       }
 
