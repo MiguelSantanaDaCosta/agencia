@@ -8,6 +8,14 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "agencia")
 public class Agencia {
+    private static Agencia instance;
+
+    public static Agencia getInstance() {
+    if (instance == null) {
+        instance = new Agencia();
+    }
+    return instance;
+}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
