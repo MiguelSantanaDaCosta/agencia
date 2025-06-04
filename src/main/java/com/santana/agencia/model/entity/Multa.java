@@ -1,6 +1,6 @@
 package com.santana.agencia.model.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -13,6 +13,9 @@ public class Multa {
     private String motivo;
     private LocalDate data;
     
+    @OneToOne
+    private Agencia agencia;
+
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;

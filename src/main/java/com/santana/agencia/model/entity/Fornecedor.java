@@ -1,6 +1,6 @@
 package com.santana.agencia.model.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
@@ -13,6 +13,9 @@ public class Fornecedor {
     private String tipo;
     private boolean status;
     
+    @OneToOne
+    private Agencia agencia;
+
     @OneToMany(mappedBy = "fornecedor")
     private List<ModalFornecedor> modais;
 

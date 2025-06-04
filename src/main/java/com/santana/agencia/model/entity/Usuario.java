@@ -1,7 +1,7 @@
 package com.santana.agencia.model.entity;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 
 import jakarta.validation.constraints.Email;
 

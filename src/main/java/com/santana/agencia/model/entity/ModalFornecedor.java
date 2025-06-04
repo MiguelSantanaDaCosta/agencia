@@ -1,6 +1,6 @@
 package com.santana.agencia.model.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 public class ModalFornecedor {
@@ -16,6 +16,9 @@ public class ModalFornecedor {
     @ManyToOne
     @JoinColumn(name = "modal_id")
     private Modal modal;
+
+    @OneToOne
+    private Agencia agencia;
     
     @ManyToOne
     @JoinColumn(name = "fornecedor_id")

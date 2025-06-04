@@ -1,6 +1,6 @@
 package com.santana.agencia.model.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -19,6 +19,9 @@ public class Passageiro {
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
+
+    @OneToOne
+    private Agencia agencia;
     
     @ManyToOne
     @JoinColumn(name = "viagem_id")

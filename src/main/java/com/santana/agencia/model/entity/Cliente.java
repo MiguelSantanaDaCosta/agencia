@@ -1,6 +1,6 @@
 package com.santana.agencia.model.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import java.util.List;
 
@@ -15,6 +15,9 @@ public class Cliente extends Usuario {
     
     private String endereco;
     private String telefone;
+
+    @OneToOne
+    private Agencia agencia;
     
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Passageiro> passageiros;

@@ -5,13 +5,10 @@
         import com.santana.agencia.exception.CnpjAlreadyExistsException;
         import com.santana.agencia.model.entity.Agencia;
         import com.santana.agencia.repository.AgenciaRepository;
-        import java.util.Date;
         import org.springframework.dao.DataIntegrityViolationException;
         import org.springframework.stereotype.Service;
         import org.springframework.transaction.annotation.Transactional;
         import java.util.List;
-        import java.util.Optional;
-        import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
         
         
         

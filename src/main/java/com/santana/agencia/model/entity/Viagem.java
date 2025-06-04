@@ -1,6 +1,6 @@
     package com.santana.agencia.model.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -31,6 +31,9 @@ public class Viagem {
     @ManyToOne
     @JoinColumn(name = "pacote_id")
     private Pacote pacote;
+
+    @OneToOne
+    private Agencia agencia;
 
     // Getters e Setters
     public Long getId() {
