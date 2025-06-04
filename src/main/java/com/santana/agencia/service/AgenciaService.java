@@ -1,4 +1,4 @@
-        package com.santana.agencia.service;
+            package com.santana.agencia.service;
 
         
         import com.santana.agencia.exception.AgenciaNotFoundException;
@@ -12,8 +12,7 @@
         import java.util.List;
         import java.util.Optional;
         import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
-        import com.santana.agencia.model.entity;
-        import com.santana.agencia.repository;
+        
         
         
         
@@ -80,20 +79,17 @@
                 }
             }
 
-            // Agora, em vez de DTO, retorna a entidade singleton Agencia
+            
              @Transactional(readOnly = true)
              public Agencia obterEstatisticas() {
                return Agencia.getInstance();
               }
 
-    // Para o período, método da entidade Agencia pode ser adaptado para receber LocalDate
-             @Transactional(readOnly = true)
-             public Double obterFaturamentoPeriodo(java.time.LocalDate inicio, java.time.LocalDate fim) {
-        // Converte LocalDate para Date
-                   Date inicioDate = java.sql.Date.valueOf(inicio);
-                   Date fimDate = java.sql.Date.valueOf(fim);
-                   return Agencia.getInstance().calcularFaturamentoPeriodo(inicioDate, fimDate);
-                  }
+              @Transactional(readOnly = true)
+              public Double obterFaturamentoPeriodo(java.time.LocalDate inicio, java.time.LocalDate fim) {
+                return Agencia.getInstance().calcularFaturamentoPeriodo(inicio, fim);
+               }
+
 
             @Transactional(readOnly = true)
             public Agencia obterAgenciaPrincipal() {
