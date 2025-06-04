@@ -117,9 +117,9 @@
       <div class="modal-body">
         <form id="formCadastro" th:action="@{/usuarios/cadastro}" th:object="${usuario}" method="post">
           <div class="mb-3">
-            <label for="nomeCompleto" class="form-label">Nome Completo</label>
-            <input type="text" class="form-control" id="nomeCompleto" th:field="*{nomeCompleto}" required>
-            <small class="text-danger" th:if="${#fields.hasErrors('nomeCompleto')}" th:errors="*{nomeCompleto}"></small>
+            <label for="nome" class="form-label">Nome Completo</label>
+            <input type="text" class="form-control" id="nome" th:field="*{nome}" required>
+            <small class="text-danger" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></small>
           </div>
           <div class="mb-3">
             <label for="cpf" class="form-label">CPF</label>
@@ -199,12 +199,12 @@
       </tr>
       </thead>
       <tbody>
-      <tr th:each="viagem : ${viagens}" >
+      <tr th:each="viagem, iter : ${viagens}">
         <td th:text="${viagem.destino}" class="text-center"></td>
         <td th:text="'R$ ' + ${viagem.preco}" class="preco text-center"></td>
         <td class="text-center">
-          <span th:if="${viagem.disponivel}" class="status-disponivel"></span>
-          <span th:unless="${viagem.disponivel}" class="status-esgotado"></span>
+          <span th:if="${viagem.status}" class="status-disponivel"></span>
+          <span th:unless="${viagem.status}" class="status-esgotado"></span>
         </td>
         <td class="text-center">
           <button class="btn btn-primary"
