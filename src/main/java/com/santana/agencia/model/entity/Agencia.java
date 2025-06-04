@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+import javax.persistence.Entity;
 
 @Entity
 @Table(name = "agencia")
