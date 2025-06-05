@@ -43,6 +43,11 @@
         .cpf-mask {
           font-family: monospace;
         }
+        .btn-action {
+            margin: 0 2px;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
     </style>
 </head>
 <body>
@@ -69,6 +74,7 @@
     </div>
 </nav>
 
+<!-- Modal de Cadastro -->
 <div class="modal fade" id="cadastroModal" tabindex="-1" aria-labelledby="cadastroModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -125,6 +131,48 @@
     </div>
 </div>
 
+<!-- Modal de Edição -->
+<div class="modal fade" id="edicaoModal" tabindex="-1" aria-labelledby="edicaoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="edicaoModalLabel">Editar Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formEdicao" th:action="@{/clientes/editar}" th:object="${clienteEdicao}" method="post">
+                    <input type="hidden" th:field="*{id}">
+                    <div class="mb-3">
+                        <label for="editNome" class="form-label">Nome Completo</label>
+                        <input type="text" class="form-control" id="editNome" th:field="*{nome}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editCpf" class="form-label">CPF</label>
+                        <input type="text" class="form-control" id="editCpf" th:field="*{cpf}" placeholder="000.000.000-00" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editTelefone" class="form-label">Telefone</label>
+                        <input type="tel" class="form-control" id="editTelefone" th:field="*{telefone}" placeholder="(00) 00000-0000" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editEndereco" class="form-label">Endereço</label>
+                        <input type="text" class="form-control" id="editEndereco" th:field="*{endereco}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editSenha" class="form-label">Nova Senha (opcional)</label>
+                        <input type="password" class="form-control" id="editSenha" th:field="*{senha}">
+                        <small class="text-muted">Deixe em branco para manter a senha atual</small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formEdicao" class="btn btn-primary">Salvar Alterações</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="hero-section text-center">
     <div class="container">
         <h1 class="display-4">ViajeMais</h1>
@@ -147,6 +195,7 @@
                 <th>CPF</th>
                 <th>Endereço</th>
                 <th>Telefone</th>
+                <th>Ações</th>
             </tr>
             </thead>
             <tbody>
@@ -155,9 +204,20 @@
                 <td th:text="${cliente.cpf}"></td>
                 <td th:text="${cliente.endereco}"></td>
                 <td th:text="${cliente.telefone}"></td>
+                <td>
+                    <button class="btn btn-primary btn-sm btn-action" data-bs-toggle="modal" data-bs-target="#edicaoModal"
+                            th:attr="data-id=${cliente.id}, data-nome=${cliente.nome}, data-cpf=${cliente.cpf},
+                                    data-telefone=${cliente.telefone}, data-endereco=${cliente.endereco}">
+                        <i class="bi bi-pencil"></i> Editar
+                    </button>
+                    <button class="btn btn-danger btn-sm btn-action" onclick="confirmarExclusao(this)"
+                            th:attr="data-id=${cliente.id}">
+                        <i class="bi bi-trash"></i> Excluir
+                    </button>
+                </td>
             </tr>
             <tr th:if="${#lists.isEmpty(clientes)}">
-                <td colspan="4" class="text-center">Nenhum cliente cadastrado.</td>
+                <td colspan="5" class="text-center">Nenhum cliente cadastrado.</td>
             </tr>
             </tbody>
         </table>
@@ -195,25 +255,38 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+      // Máscaras para CPF e Telefone
       const cpf = document.getElementById('cpf');
       const telefone = document.getElementById('telefone');
+      const editCpf = document.getElementById('editCpf');
+      const editTelefone = document.getElementById('editTelefone');
 
-      cpf.addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length > 3) value = value.substring(0, 3) + '.' + value.substring(3);
-        if (value.length > 7) value = value.substring(0, 7) + '.' + value.substring(7);
-        if (value.length > 11) value = value.substring(0, 11) + '-' + value.substring(11);
-        e.target.value = value.substring(0, 14);
-      });
+      function aplicarMascaraCPF(elemento) {
+        elemento.addEventListener('input', function(e) {
+          let value = e.target.value.replace(/\D/g, '');
+          if (value.length > 3) value = value.substring(0, 3) + '.' + value.substring(3);
+          if (value.length > 7) value = value.substring(0, 7) + '.' + value.substring(7);
+          if (value.length > 11) value = value.substring(0, 11) + '-' + value.substring(11);
+          e.target.value = value.substring(0, 14);
+        });
+      }
 
-      telefone.addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length > 0) value = '(' + value;
-        if (value.length > 3) value = value.substring(0, 3) + ') ' + value.substring(3);
-        if (value.length > 10) value = value.substring(0, 10) + '-' + value.substring(10);
-        e.target.value = value.substring(0, 15);
-      });
+      function aplicarMascaraTelefone(elemento) {
+        elemento.addEventListener('input', function(e) {
+          let value = e.target.value.replace(/\D/g, '');
+          if (value.length > 0) value = '(' + value;
+          if (value.length > 3) value = value.substring(0, 3) + ') ' + value.substring(3);
+          if (value.length > 10) value = value.substring(0, 10) + '-' + value.substring(10);
+          e.target.value = value.substring(0, 15);
+        });
+      }
 
+      aplicarMascaraCPF(cpf);
+      aplicarMascaraTelefone(telefone);
+      aplicarMascaraCPF(editCpf);
+      aplicarMascaraTelefone(editTelefone);
+
+      // Validação de formulário de cadastro
       document.getElementById('formCadastro').addEventListener('submit', function(e) {
         e.preventDefault();
 
@@ -225,12 +298,46 @@
           return;
         }
 
-        alert('Cadastro realizado com sucesso!');
-
-        const modal = bootstrap.Modal.getInstance(document.getElementById('cadastroModal'));
-        modal.hide();
+        this.submit();
       });
+
+      // Configuração do modal de edição
+      const edicaoModal = document.getElementById('edicaoModal');
+      if (edicaoModal) {
+        edicaoModal.addEventListener('show.bs.modal', function(event) {
+          const button = event.relatedTarget;
+          const id = button.getAttribute('data-id');
+          const nome = button.getAttribute('data-nome');
+          const cpf = button.getAttribute('data-cpf');
+          const telefone = button.getAttribute('data-telefone');
+          const endereco = button.getAttribute('data-endereco');
+
+          document.getElementById('editNome').value = nome;
+          document.getElementById('editCpf').value = cpf;
+          document.getElementById('editTelefone').value = telefone;
+          document.getElementById('editEndereco').value = endereco;
+          document.querySelector('#formEdicao input[name="id"]').value = id;
+        });
+      }
     });
+
+    function confirmarExclusao(button) {
+      const id = button.getAttribute('data-id');
+      if (confirm('Tem certeza que deseja excluir este cliente?')) {
+        // Aqui você pode adicionar a lógica para excluir o cliente
+        // Exemplo com fetch:
+        // fetch('/clientes/excluir/' + id, { method: 'DELETE' })
+        //   .then(response => {
+        //     if (response.ok) {
+        //       button.closest('tr').remove();
+        //     }
+        //   });
+
+        // Por enquanto, apenas simulando a exclusão
+        button.closest('tr').remove();
+        alert('Cliente excluído com sucesso!');
+      }
+    }
 </script>
 </body>
 </html>
