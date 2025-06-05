@@ -20,6 +20,20 @@ public class Viagem {
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
+    @ManyToOne
+    @JoinColumn(name = "modal_id")
+    private Modal modal;
+
+    @ManyToOne
+    @JoinColumn(name = "fornecedor_id")
+    private Fornecedor fornecedor;
+
+    @ManyToOne
+    @JoinColumn(name = "pacote_id")
+    private Pacote pacote;
+
+    @OneToOne
+    private Agencia agencia;
 
     // Getters e Setters
     public Long getId() {
