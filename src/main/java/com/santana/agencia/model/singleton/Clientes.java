@@ -1,45 +1,53 @@
 package com.santana.agencia.model.singleton;
 
+import com.santana.agencia.exception.CPFAlreadyExistsException;
+import com.santana.agencia.exception.ClienteNotFoundException;
 import com.santana.agencia.model.entity.Cliente;
+import com.santana.agencia.repository.ClienteRepository;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Service
 public class Clientes {
-
     private static Clientes instance;
-    private final List<Cliente> clientes;
+    private final ClienteRepository clienteRepository;
 
-    private Clientes() {
-        this.clientes = new ArrayList<>();
+    @Autowired
+    private Clientes(ClienteRepository clienteRepository) {
+        this.clienteRepository = clienteRepository;
     }
 
-    public static synchronized Clientes getInstance() {
+    public static synchronized Clientes getInstance(ClienteRepository clienteRepository) {
         if (instance == null) {
-            instance = new Clientes();
+            instance = new Clientes(clienteRepository);
         }
         return instance;
     }
 
+    @Transactional
     public void adicionarCliente(Cliente cliente) {
-        clientes.add(cliente);
+        if (clienteRepository.existsByCpf(cliente.getCpf())) {
+            throw new CPFAlreadyExistsException(cliente.getCpf());
+        }
+        clienteRepository.save(cliente);
     }
 
-    public void removerCliente(Cliente cliente) {
-        clientes.remove(cliente);
-    }
-
+    @Transactional(readOnly = true)
     public List<Cliente> getClientes() {
-        return new ArrayList<>(clientes); // Retorna cópia para evitar modificações externas
+        return clienteRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Cliente buscarPorId(Long id) {
-        return clientes.stream()
-                .filter(c -> c.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+        return clienteRepository.findById(id)
+                .orElseThrow(() -> new ClienteNotFoundException());
     }
 
-    public void limparClientes() {
-        clientes.clear();
+    @Transactional
+    public synchronized void removerCliente(Cliente cliente) {
+        clienteRepository.delete(cliente);
     }
 }

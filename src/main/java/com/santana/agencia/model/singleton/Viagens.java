@@ -1,45 +1,55 @@
 package com.santana.agencia.model.singleton;
 
 import com.santana.agencia.model.entity.Viagem;
+import com.santana.agencia.repository.ViagemRepository;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Service
 public class Viagens {
     private static Viagens instance;
-    private final List<Viagem> viagens;
+    private final ViagemRepository viagemRepository;
 
-    private Viagens() {
-        this.viagens = new ArrayList<>();
+    @Autowired
+    private Viagens(ViagemRepository viagemRepository) {
+        this.viagemRepository = viagemRepository;
     }
 
-    public static synchronized Viagens getInstance() {
+    public static synchronized Viagens getInstance(ViagemRepository viagemRepository) {
         if (instance == null) {
-            instance = new Viagens();
+            instance = new Viagens(viagemRepository);
         }
         return instance;
     }
 
+    @Transactional
     public void adicionarViagem(Viagem viagem) {
-        viagens.add(viagem);
+        viagemRepository.save(viagem);
     }
 
-    public void removerViagem(Viagem viagem) {
-        viagens.remove(viagem);
-    }
-
+    @Transactional(readOnly = true)
     public List<Viagem> getViagens() {
-        return new ArrayList<>(viagens);
+        return viagemRepository.findAll();
     }
 
-    public List<Viagem> buscarPorDestino(String destino) {
-        return viagens.stream()
-                .filter(v -> v.getDestino().equalsIgnoreCase(destino))
-                .toList();
-    }
-
+    @Transactional(readOnly = true)
     public List<Viagem> buscarViagensDisponiveis() {
-        return viagens.stream()
-                .filter(v -> v.getVagas() > 0)
-                .toList();
+        return viagemRepository.findByVagasGreaterThan(0);
+    }
+
+    @Transactional
+    public synchronized boolean diminuirVagas(Long viagemId) {
+        Viagem viagem = viagemRepository.findById(viagemId)
+                .orElseThrow(() -> new RuntimeException("Viagem não encontrada"));
+        
+        if (viagem.getVagas() > 0) {
+            viagem.setVagas(viagem.getVagas() - 1);
+            viagemRepository.save(viagem);
+            return true;
+        }
+        return false;
     }
 }
