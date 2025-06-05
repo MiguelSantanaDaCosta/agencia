@@ -4,7 +4,8 @@ Este projeto é uma aplicação web de uma agência de viagens, desenvolvida uti
 
 ## Tecnologias Utilizadas
 
-- Java 17  
+- Java 21
+  
 - Spring Boot  
 - Thymeleaf  
 - MySQL  
@@ -13,7 +14,7 @@ Este projeto é uma aplicação web de uma agência de viagens, desenvolvida uti
 
 ## Pré-requisitos
 
-- Java 17 instalado  
+- Java 21 instalado  
 - Docker e Docker Compose instalados  
 - Maven instalado  
 
