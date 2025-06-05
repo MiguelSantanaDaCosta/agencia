@@ -126,48 +126,6 @@
     </div>
 </div>
 
-<!-- Modal de Edição -->
-<div class="modal fade" id="edicaoModal" tabindex="-1" aria-labelledby="edicaoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="edicaoModalLabel">Editar Cliente</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="formEdicao" th:action="@{/clientes/editar}" th:object="${clienteEdicao}" method="post">
-                    <input type="hidden" th:field="*{id}">
-                    <div class="mb-3">
-                        <label for="editNome" class="form-label">Nome Completo</label>
-                        <input type="text" class="form-control" id="editNome" th:field="*{nome}" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editCpf" class="form-label">CPF</label>
-                        <input type="text" class="form-control" id="editCpf" th:field="*{cpf}" placeholder="000.000.000-00" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editTelefone" class="form-label">Telefone</label>
-                        <input type="tel" class="form-control" id="editTelefone" th:field="*{telefone}" placeholder="(00) 00000-0000" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editEndereco" class="form-label">Endereço</label>
-                        <input type="text" class="form-control" id="editEndereco" th:field="*{endereco}" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editSenha" class="form-label">Nova Senha (opcional)</label>
-                        <input type="password" class="form-control" id="editSenha" th:field="*{senha}">
-                        <small class="text-muted">Deixe em branco para manter a senha atual</small>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" form="formEdicao" class="btn btn-primary">Salvar Alterações</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="hero-section text-center">
     <div class="container">
         <h1 class="display-4">ViajeMais</h1>
@@ -202,15 +160,9 @@
                 <td th:text="${cliente.endereco}"></td>
                 <td th:text="${cliente.telefone}"></td>
                 <td>
-                    <button class="btn btn-primary btn-sm btn-action" data-bs-toggle="modal" data-bs-target="#edicaoModal"
-                            th:attr="data-id=${cliente.id}, data-nome=${cliente.nome}, data-cpf=${cliente.cpf},
-                                    data-telefone=${cliente.telefone}, data-endereco=${cliente.endereco}">
-                        <i class="bi bi-pencil"></i> Editar
-                    </button>
-                    <button class="btn btn-danger btn-sm btn-action" onclick="confirmarExclusao(this)"
-                            th:attr="data-id=${cliente.id}">
+                  <a class="btn btn-danger btn-sm btn-action" th:href="@{/clientes/deletar?(clienteId=${cliente.id})}">
                         <i class="bi bi-trash"></i> Excluir
-                    </button>
+                    </a>
                 </td>
             </tr>
             <tr th:if="${#lists.isEmpty(clientes)}">
@@ -283,36 +235,6 @@
       aplicarMascaraCPF(editCpf);
       aplicarMascaraTelefone(editTelefone);
 
-      // Validação de formulário de cadastro
-      document.getElementById('formCadastro').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        alert('Cadastro realizado com sucesso!');
-
-        const modal = bootstrap.Modal.getInstance(document.getElementById('cadastroModal'));
-        modal.hide();
-
-        this.submit();
-      });
-
-      // Configuração do modal de edição
-      const edicaoModal = document.getElementById('edicaoModal');
-      if (edicaoModal) {
-        edicaoModal.addEventListener('show.bs.modal', function(event) {
-          const button = event.relatedTarget;
-          const id = button.getAttribute('data-id');
-          const nome = button.getAttribute('data-nome');
-          const cpf = button.getAttribute('data-cpf');
-          const telefone = button.getAttribute('data-telefone');
-          const endereco = button.getAttribute('data-endereco');
-
-          document.getElementById('editNome').value = nome;
-          document.getElementById('editCpf').value = cpf;
-          document.getElementById('editTelefone').value = telefone;
-          document.getElementById('editEndereco').value = endereco;
-          document.querySelector('#formEdicao input[name="id"]').value = id;
-        });
-      }
     });
 
 function confirmarExclusao(button) {
