@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viagens</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .card-viagem {
+            transition: transform 0.4s;
+            margin-bottom: 20px;
+        }
+        .card-viagem:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .preco {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://raw.githubusercontent.com/GabrielYYM/BDImagens/refs/heads/main/d962f907-d00c-476f-bd5f-2f6cf57f79fe-707134579.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            margin-bottom: 40px;
+        }
+        .status-disponivel {
+            color: green;
+            font-weight: bold;
+        }
+        .status-esgotado {
+            color: red;
+            font-weight: bold;
+        }
+        .navbar-brand{
+            font-size: 24px;
+        }
+        .cpf-mask {
+          font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="Agencia.html">ViajeMais</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="Agencia.html">Início</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="Clientes.html">Clientes</a>
+                </li>
+            </ul>
+            <div class="d-flex">
+                <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#cadastroModal">Cadastro Cliente</button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="modal fade" id="cadastroModal" tabindex="-1" aria-labelledby="cadastroModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cadastroModalLabel">Crie sua conta</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formCadastro" th:action="@{/usuarios/cadastro}" th:object="${cliente}" method="post">
+                    <div class="mb-3">
+                        <label for="nome" class="form-label">Nome Completo</label>
+                        <input type="text" class="form-control" id="nome" th:field="*{nome}" required>
+                        <small class="text-danger" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cpf" class="form-label">CPF</label>
+                        <input type="text" class="form-control" id="cpf" th:field="*{cpf}" placeholder="000.000.000-00" required>
+                        <small class="text-danger" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}"></small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefone" class="form-label">Telefone</label>
+                        <input type="tel" class="form-control" id="telefone" th:field="*{telefone}" placeholder="(00) 00000-0000" required>
+                        <small class="text-danger" th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}"></small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="endereco" class="form-label">Endereço</label>
+                        <input type="text" class="form-control" id="endereco" th:field="*{endereco}" required>
+                        <small class="text-danger" th:if="${#fields.hasErrors('endereco')}" th:errors="*{endereco}"></small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="senha" class="form-label">Senha</label>
+                        <input type="password" class="form-control" id="senha" th:field="*{senha}" required>
+                        <small class="text-danger" th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmarSenha" class="form-label">Confirmar Senha</label>
+                        <input type="password" class="form-control" id="confirmarSenha" th:field="*{confirmarSenha}" required>
+                        <small class="text-danger" th:if="${#fields.hasErrors('confirmarSenha')}" th:errors="*{confirmarSenha}"></small>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="termos" th:field="*{termos}" required>
+                        <label class="form-check-label" for="termos">
+                            Aceito os <a href="#">Termos de Uso</a> e <a href="#">Política de Privacidade</a>
+                        </label>
+                        <small class="text-danger" th:if="${#fields.hasErrors('termos')}" th:errors="*{termos}"></small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formCadastro" class="btn btn-primary">Cadastrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4">ViajeMais</h1>
+        <p class="lead">Encontre as melhores ofertas para suas férias dos sonhos</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h2>Clientes</h2>
+        </div>
+    </div>
+
+    <div class="table-responsive table-viagens">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+            <tr>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Endereço</th>
+                <th>Telefone</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="cliente : ${clientes}">
+                <td th:text="${cliente.nome}"></td>
+                <td th:text="${cliente.cpf}"></td>
+                <td th:text="${cliente.endereco}"></td>
+                <td th:text="${cliente.telefone}"></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(clientes)}">
+                <td colspan="4" class="text-center">Nenhum cliente cadastrado.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<footer class="bg-white text-dark py-5 mt-5 border-top border-secondary">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h5>Sobre nós</h5>
+                <p>Loren ipsun dolor sit anet, consectetur adipisci elit, sed eiusnod tenpor incidunt ut labore et dolore nagna aliqua. Ut enin ad ninin venian, quis nostrun exercitationen ullan corporis suscipit laboriosan, nisi ut aliquid ex ea connodi consequatur.</p>
+            </div>
+            <div class="col-md-4">
+                <h5>Links úteis</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-dark">Termos de uso</a></li>
+                    <li><a href="#" class="text-dark">Política de privacidade</a></li>
+                    <li><a href="#" class="text-dark">Dúvidas frequentes</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5>Contato</h5>
+                <address>
+                    <strong>ViajeMais</strong><br>
+                    Loren ipsun, 123<br>
+                    Loren ipsun, LI<br>
+                    <abbr title="Phone">Tel:</abbr> (11) 1234-5678
+                </address>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const cpf = document.getElementById('cpf');
+      const telefone = document.getElementById('telefone');
+
+      cpf.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 3) value = value.substring(0, 3) + '.' + value.substring(3);
+        if (value.length > 7) value = value.substring(0, 7) + '.' + value.substring(7);
+        if (value.length > 11) value = value.substring(0, 11) + '-' + value.substring(11);
+        e.target.value = value.substring(0, 14);
+      });
+
+      telefone.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 0) value = '(' + value;
+        if (value.length > 3) value = value.substring(0, 3) + ') ' + value.substring(3);
+        if (value.length > 10) value = value.substring(0, 10) + '-' + value.substring(10);
+        e.target.value = value.substring(0, 15);
+      });
+
+      document.getElementById('formCadastro').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const senha = document.getElementById('senha').value;
+        const confirmarSenha = document.getElementById('confirmarSenha').value;
+
+        if (senha !== confirmarSenha) {
+          alert('As senhas não coincidem!');
+          return;
+        }
+
+        alert('Cadastro realizado com sucesso!');
+
+        const modal = bootstrap.Modal.getInstance(document.getElementById('cadastroModal'));
+        modal.hide();
+      });
+    });
+</script>
+</body>
+</html>
