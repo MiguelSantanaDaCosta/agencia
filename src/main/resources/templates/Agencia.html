@@ -17,8 +17,6 @@
         box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     }
     .preco {
-        font-size: 1.5rem;
-        font-weight: bold;
         color: #0d6efd;
     }
     .hero-section {
@@ -56,10 +54,10 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link active" href="Agencia.html">Início</a>
+          <a class="nav-link active" href="/">Início</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="Clientes.html">Clientes</a>
+          <a class="nav-link" href="/clientes">Clientes</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href=".html"></a>
@@ -72,41 +70,6 @@
   </div>
 </nav>
 
-<div th:each="viagem, iter : ${viagens}">
-  <div class="modal fade" th:id="'modalPassageiros' + ${iter.index}" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Passageiros da Viagem para <span th:text="${viagem.destino}"></span></h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-        </div>
-        <div class="modal-body">
-          <table class="table table-bordered table-hover">
-            <thead>
-            <tr>
-              <th class="text-center">Nome</th>
-              <th class="text-center">CPF</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="p : ${viagem.passageiros}">
-              <td class="text-center" th:text="${p.nome}"></td>
-              <td class="text-center" th:text="${p.cpf}"></td>
-            </tr>
-            <tr th:if="${#lists.isEmpty(viagem.passageiros)}">
-              <td colspan="2" class="text-center text-muted">Nenhum passageiro cadastrado.</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="modal fade" id="cadastroViagemModal" tabindex="-1" aria-labelledby="cadastroViagemModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -115,29 +78,29 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="formCadastroViagem" th:action="@{/viagens/cadastrar}" th:object="${viagem}" method="post">
+        <form id="formCadastroViagem" th:action="@{/viagens/cadastrar}" method="post">
+          <div class="mb-3">
+            <label for="destino" class="form-label">ID do cliente</label>
+            <input type="text" class="form-control" name="cliente" required>
+          </div>
           <div class="mb-3">
             <label for="destino" class="form-label">Destino</label>
-            <input type="text" class="form-control" id="destino" th:field="*{destino}" required>
+            <input type="text" class="form-control" name="destino" required>
           </div>
           <div class="mb-3">
             <label for="preco" class="form-label">Preço (R$)</label>
-            <input type="number" step="0.01" class="form-control" id="preco" th:field="*{preco}" required>
+            <input type="number" step="0.01" class="form-control" name="preco" required>
           </div>
           <div class="mb-3">
             <label for="dataInicio" class="form-label">Data de Início</label>
-            <input type="date" class="form-control" id="dataInicio" th:field="*{dataInicio}" required>
+            <input type="date" class="form-control" name="dataInicio" required>
           </div>
           <div class="mb-3">
             <label for="dataFim" class="form-label">Data de Fim</label>
-            <input type="date" class="form-control" id="dataFim" th:field="*{dataFim}" required>
-          </div>
-          <div class="mb-3">
-            <label for="vagas" class="form-label">Número de Vagas</label>
-            <input type="number" class="form-control" id="vagas" th:field="*{vagas}" required>
+            <input type="date" class="form-control" name="dataFim" required>
           </div>
           <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="status" th:field="*{status}">
+            <input type="checkbox" class="form-check-input" name="status">
             <label class="form-check-label" for="status">Viagem disponível</label>
           </div>
         </form>
@@ -158,45 +121,40 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="formCadastro" th:action="@{/usuarios/cadastro}" th:object="${usuario}" method="post">
-          <div class="mb-3">
-            <label for="nome" class="form-label">Nome Completo</label>
-            <input type="text" class="form-control" id="nome" th:field="*{nome}" required>
-            <small class="text-danger" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></small>
-          </div>
-          <div class="mb-3">
-            <label for="cpf" class="form-label">CPF</label>
-            <input type="text" class="form-control" id="cpf" th:field="*{cpf}" placeholder="000.000.000-00" required>
-            <small class="text-danger" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}"></small>
-          </div>
-          <div class="mb-3">
-            <label for="telefone" class="form-label">Telefone</label>
-            <input type="tel" class="form-control" id="telefone" th:field="*{telefone}" placeholder="(00) 00000-0000" required>
-            <small class="text-danger" th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}"></small>
-          </div>
-          <div class="mb-3">
-            <label for="endereco" class="form-label">Endereço</label>
-            <input type="text" class="form-control" id="endereco" th:field="*{endereco}" required>
-            <small class="text-danger" th:if="${#fields.hasErrors('endereco')}" th:errors="*{endereco}"></small>
-          </div>
-          <div class="mb-3">
-            <label for="senha" class="form-label">Senha</label>
-            <input type="password" class="form-control" id="senha" th:field="*{senha}" required>
-            <small class="text-danger" th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></small>
-          </div>
-          <div class="mb-3">
-            <label for="confirmarSenha" class="form-label">Confirmar Senha</label>
-            <input type="password" class="form-control" id="confirmarSenha" th:field="*{confirmarSenha}" required>
-            <small class="text-danger" th:if="${#fields.hasErrors('confirmarSenha')}" th:errors="*{confirmarSenha}"></small>
-          </div>
-          <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" id="termos" th:field="*{termos}" required>
-            <label class="form-check-label" for="termos">
-              Aceito os <a href="#">Termos de Uso</a> e <a href="#">Política de Privacidade</a>
-            </label>
-            <small class="text-danger" th:if="${#fields.hasErrors('termos')}" th:errors="*{termos}"></small>
-          </div>
-        </form>
+                <form id="formCadastro" th:action="@{/clientes}" method="post">
+                    <div class="mb-3">
+                        <label for="nome" class="form-label">Nome Completo</label>
+                        <input type="text" class="form-control" name="nome" required>
+                        <small class="text-danger" ></small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="text" class="form-control" name="email" placeholder="voce@email.com" required>
+                        <small class="text-danger" ></small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cpf" class="form-label">CPF</label>
+                        <input type="text" class="form-control" name="cpf" placeholder="000.000.000-00" required>
+                        <small class="text-danger" ></small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefone" class="form-label">Telefone</label>
+                        <input type="tel" class="form-control" name="telefone" placeholder="(00) 00000-0000" required>
+                        <small class="text-danger" ></small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="endereco" class="form-label">Endereço</label>
+                        <input type="text" class="form-control" name="endereco" required>
+                        <small class="text-danger"></small>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="termos" required>
+                        <label class="form-check-label" for="termos">
+                            Aceito os <a href="#">Termos de Uso</a> e <a href="#">Política de Privacidade</a>
+                        </label>
+                        <small class="text-danger" ></small>
+                    </div>
+                </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -238,9 +196,9 @@
     <table class="table table-hover align-middle">
       <thead class="table-light">
       <tr>
+        <th class="text-center">ID</th>
         <th class="text-center">Destino</th>
         <th class="text-center">Preço</th>
-        <th class="text-center">Status</th>
         <th class="text-center">Data início</th>
         <th class="text-center">Data final</th>
         <th class="text-center">Ações</th>
@@ -248,13 +206,15 @@
       </thead>
       <tbody>
       <tr th:each="viagem, iter : ${viagens}">
+        <td th:text="${viagem.id}" class="text-center"></td>
         <td th:text="${viagem.destino}" class="text-center"></td>
         <td th:text="'R$ ' + ${viagem.preco}" class="preco text-center"></td>
+        <td th:text="${viagem.dataInicio}" class="text-center"></td>
+        <td th:text="${viagem.dataFim}" class="text-center"></td>
         <td class="text-center">
-          <span th:if="${viagem.status}" class="status-disponivel"></span>
-          <span th:unless="${viagem.status}" class="status-esgotado"></span>
-        </td>
-        <td class="text-center">
+                  <a class="btn btn-danger btn-sm btn-action" th:href="@{/viagens/deletar?(viagemId=${viagem.id})}">
+                        <i class="bi bi-trash"></i> Excluir
+                    </a>
         </td>
       </tr>
       </tbody>

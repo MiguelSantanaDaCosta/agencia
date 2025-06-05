@@ -14,27 +14,14 @@ public class Viagem {
     private boolean status;
     private LocalDate dataInicio;
     private LocalDate dataFim;
-    private int vagas;
     
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @ManyToOne
-    @JoinColumn(name = "modal_id")
-    private Modal modal;
-
-    @ManyToOne
-    @JoinColumn(name = "fornecedor_id")
-    private Fornecedor fornecedor;
-
-    @ManyToOne
-    @JoinColumn(name = "pacote_id")
-    private Pacote pacote;
-
     @OneToOne
     private Agencia agencia;
-
+    
     // Getters e Setters
     public Long getId() {
         return id;
@@ -84,43 +71,11 @@ public class Viagem {
         this.dataFim = dataFim;
     }
 
-    public int getVagas() {
-        return vagas;
-    }
-
-    public void setVagas(int vagas) {
-        this.vagas = vagas;
-    }
-
     public Cliente getCliente() {
         return cliente;
     }
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
-    }
-
-    public Modal getModal() {
-        return modal;
-    }
-
-    public void setModal(Modal modal) {
-        this.modal = modal;
-    }
-
-    public Fornecedor getFornecedor() {
-        return fornecedor;
-    }
-
-    public void setFornecedor(Fornecedor fornecedor) {
-        this.fornecedor = fornecedor;
-    }
-
-    public Pacote getPacote() {
-        return pacote;
-    }
-
-    public void setPacote(Pacote pacote) {
-        this.pacote = pacote;
     }
 }

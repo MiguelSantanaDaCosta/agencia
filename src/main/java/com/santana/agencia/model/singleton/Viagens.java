@@ -39,7 +39,6 @@ public class Viagens {
 
     public List<Viagem> buscarViagensDisponiveis() {
         return viagens.stream()
-                .filter(v -> v.getVagas() > 0)
                 .toList();
     }
 }

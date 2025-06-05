@@ -35,28 +35,8 @@ public class ViagemBuilder {
         return this;
     }
 
-    public ViagemBuilder comVagas(int vagas) {
-        viagem.setVagas(vagas);
-        return this;
-    }
-
     public ViagemBuilder comCliente(Cliente cliente) {
         viagem.setCliente(cliente);
-        return this;
-    }
-
-    public ViagemBuilder comModal(Modal modal) {
-        viagem.setModal(modal);
-        return this;
-    }
-
-    public ViagemBuilder comFornecedor(Fornecedor fornecedor) {
-        viagem.setFornecedor(fornecedor);
-        return this;
-    }
-
-    public ViagemBuilder comPacote(Pacote pacote) {
-        viagem.setPacote(pacote);
         return this;
     }
 

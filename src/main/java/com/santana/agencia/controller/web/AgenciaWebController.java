@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.santana.agencia.service.ViagemService;
 
@@ -31,5 +32,11 @@ public class AgenciaWebController {
     public String cadastrarViagem(Viagem viagem) {
         viagemService.salvar(viagem);
         return "redirect:/";
+    }
+
+    @GetMapping("/viagens/deletar")
+    public String deletarViagem(@RequestParam Long viagemId) {
+      viagemService.deletar(viagemId);
+      return "redirect:/";
     }
 }

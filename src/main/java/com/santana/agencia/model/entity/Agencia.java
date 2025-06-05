@@ -71,26 +71,6 @@ public class Agencia {
                 .collect(Collectors.toList());
     }
 
-    public List<Viagem> listarViagensDisponiveis() {
-        return viagens.stream()
-                .filter(v -> v.getVagas() > 0)
-                .collect(Collectors.toList());
-    }
-
-    public boolean diminuirVagasViagem(Long viagemId) {
-        Optional<Viagem> viagemOpt = viagens.stream()
-                .filter(v -> v.getId().equals(viagemId))
-                .findFirst();
-        
-        if (viagemOpt.isPresent()) {
-            Viagem viagem = viagemOpt.get();
-            if (viagem.getVagas() > 0) {
-                viagem.setVagas(viagem.getVagas() - 1);
-                return true;
-            }
-        }
-        return false;
-    }
 
     public Map<String, Object> gerarEstatisticas() {
         Map<String, Object> estatisticas = new HashMap<>();
@@ -129,7 +109,6 @@ public class Agencia {
 
     private long contarViagensDisponiveis() {
         return viagens.stream()
-                .filter(v -> v.getVagas() > 0)
                 .count();
     }
 

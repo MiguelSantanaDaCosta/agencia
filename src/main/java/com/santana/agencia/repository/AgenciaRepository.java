@@ -46,10 +46,6 @@ public interface AgenciaRepository extends JpaRepository<Agencia, Long> {
     @Query("SELECT COUNT(c) FROM Cliente c WHERE c.status = true")
     Long countClientesAtivos();
 
-    // Consulta para contar viagens com vagas disponíveis
-    @Query("SELECT COUNT(v) FROM Viagem v WHERE v.vagas > 0")
-    Long countViagensDisponiveis();
-
     // Método correto para verificar existência de CNPJ
     boolean existsByCnpj(String cnpj);
 }
