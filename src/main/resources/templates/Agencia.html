@@ -195,6 +195,8 @@
         <th class="text-center">Destino</th>
         <th class="text-center">Preço</th>
         <th class="text-center">Status</th>
+        <th class="text-center">Data início</th>
+        <th class="text-center">Data final</th>
         <th class="text-center">Ações</th>
       </tr>
       </thead>
@@ -207,11 +209,6 @@
           <span th:unless="${viagem.status}" class="status-esgotado"></span>
         </td>
         <td class="text-center">
-          <button class="btn btn-primary"
-                  data-bs-toggle="modal"
-                  th:attr="data-bs-target='#modalPassageiros' + ${iter.index}">
-            Ver Passageiros
-          </button>
         </td>
       </tr>
       </tbody>
