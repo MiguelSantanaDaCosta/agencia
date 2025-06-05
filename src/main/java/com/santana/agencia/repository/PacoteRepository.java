@@ -21,4 +21,6 @@
 
         @Query("SELECT DISTINCT p.destino FROM Pacote p")
         List<String> findDistinctDestinos();
+
+    public List<Pacote> findByDestinoContainingIgnoreCase(String destino);
     }

@@ -1,40 +1,60 @@
 package com.santana.agencia.model.singleton;
 
 import com.santana.agencia.model.entity.Modal;
+import com.santana.agencia.repository.ModalRepository;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;    
+import java.util.List;
+import java.util.Optional;
 
+@Service
 public class Modais {
     private static Modais instance;
-    private final List<Modal> modais;
+    private final ModalRepository modalRepository;
 
-    private Modais() {
-        this.modais = new ArrayList<>();
+    @Autowired
+    private Modais(ModalRepository modalRepository) {
+        this.modalRepository = modalRepository;
     }
 
-    public static synchronized Modais getInstance() {
+    public static synchronized Modais getInstance(ModalRepository modalRepository) {
         if (instance == null) {
-            instance = new Modais();
+            instance = new Modais(modalRepository);
         }
         return instance;
     }
 
-    public void adicionarModal(Modal modal) {
-        modais.add(modal);
+    @Transactional
+    public Modal adicionarModal(Modal modal) {
+        return modalRepository.save(modal);
     }
 
-    public void removerModal(Modal modal) {
-        modais.remove(modal);
+    @Transactional
+    public void removerModal(Long id) {
+        modalRepository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     public List<Modal> getModais() {
-        return new ArrayList<>(modais);
+        return modalRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Modal buscarPorTipo(String tipo) {
-        return modais.stream()
-                .filter(m -> m.getTipo().equalsIgnoreCase(tipo))
-                .findFirst()
-                .orElse(null);
+        return modalRepository.findByTipoIgnoreCase(tipo)
+                .orElseThrow(() -> new RuntimeException("Modal do tipo " + tipo + " não encontrado"));
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> getTiposDisponiveis() {
+        return modalRepository.findDistinctTipos();
+    }
+
+    @Transactional(readOnly = true)
+    public boolean existeModalDoTipo(String tipo) {
+        return modalRepository.findByTipoIgnoreCase(tipo).isPresent();
     }
 }

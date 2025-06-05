@@ -1,4 +1,4 @@
-package com.santana.agencia.repository;
+    package com.santana.agencia.repository;
 
 import com.santana.agencia.model.entity.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,4 +28,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END " +
            "FROM Cliente c WHERE c.cpf = :cpf")
     boolean existsByCpf(String cpf);
+
+    Optional<Cliente> findByEmail(String email); // Corrigido o retorno
 }
