@@ -1,17 +1,17 @@
-package com.santana.agencia.controller;
+package com.santana.agencia.controller.api;
 
-import com.santana.agencia.model.entity.Viagem;
-import com.santana.agencia.service.ViagemService;
+import com.santana.agencia.model.entity.Fornecedor;
+import com.santana.agencia.service.FornecedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/viagens")
-public class ViagemController {
+@RequestMapping("/api/fornecedores")
+public class FornecedorController {
 
     @Autowired
-    private ViagemService service;
+    private FornecedorService service;
 
     @GetMapping
     public ResponseEntity<?> listarTodos() {
@@ -22,20 +22,30 @@ public class ViagemController {
         }
     }
 
-    @GetMapping("/cliente/{clienteId}")
-    public ResponseEntity<?> listarPorCliente(@PathVariable Long clienteId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok(service.listarPorCliente(clienteId));
+            return ResponseEntity.ok(service.buscarPorId(id));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @PostMapping
-    public ResponseEntity<?> salvar(@RequestBody Viagem viagem) {
+    public ResponseEntity<?> salvar(@RequestBody Fornecedor fornecedor) {
         try {
-            Viagem salva = service.salvar(viagem);
-            return ResponseEntity.ok(salva);
+            Fornecedor salvo = service.salvar(fornecedor);
+            return ResponseEntity.ok(salvo);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Fornecedor fornecedor) {
+        try {
+            Fornecedor atualizado = service.atualizar(id, fornecedor);
+            return ResponseEntity.ok(atualizado);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

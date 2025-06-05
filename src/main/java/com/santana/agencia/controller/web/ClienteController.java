@@ -1,63 +1,25 @@
-package com.santana.agencia.controller;
+package com.santana.agencia.controller.web;
 
-import com.santana.agencia.model.entity.Cliente;
-import com.santana.agencia.service.ClienteService;
+import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-@RestController
-@RequestMapping("/api/clientes")
+import com.santana.agencia.service.ClienteService;
+
+/**
+ * ClienteController
+ */
+@Controller
+@RequestMapping("/clientes")
 public class ClienteController {
+  @Autowired
+  private ClienteService clienteService;
 
-    @Autowired
-    private ClienteService service;
-
-    @GetMapping
-    public ResponseEntity<?> listarTodos() {
-        try {
-            return ResponseEntity.ok(service.listarTodos());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
-        try {
-            return ResponseEntity.ok(service.buscarPorId(id));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @PostMapping
-    public ResponseEntity<?> salvar(@RequestBody Cliente cliente) {
-        try {
-            Cliente salvo = service.salvar(cliente);
-            return ResponseEntity.ok(salvo);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Cliente cliente) {
-        try {
-            Cliente atualizado = service.atualizar(id, cliente);
-            return ResponseEntity.ok(atualizado);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletar(@PathVariable Long id) {
-        try {
-            service.deletar(id);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+  @GetMapping
+  public String index(Model model) {
+    model.addAttribute("clientes", clienteService.listarTodos());
+    return "Clientes";
+  }
 }
