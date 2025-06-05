@@ -321,23 +321,42 @@
       }
     });
 
-    function confirmarExclusao(button) {
-      const id = button.getAttribute('data-id');
-      if (confirm('Tem certeza que deseja excluir este cliente?')) {
-        // Aqui você pode adicionar a lógica para excluir o cliente
-        // Exemplo com fetch:
-        // fetch('/clientes/excluir/' + id, { method: 'DELETE' })
-        //   .then(response => {
-        //     if (response.ok) {
-        //       button.closest('tr').remove();
-        //     }
-        //   });
+function confirmarExclusao(button) {
+    const id = button.getAttribute('data-id');
+    if (confirm('Tem certeza que deseja excluir este cliente?')) {
+        // Adiciona um spinner de carregamento no botão
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Excluindo...';
+        button.disabled = true;
 
-        // Por enquanto, apenas simulando a exclusão
-        button.closest('tr').remove();
-        alert('Cliente excluído com sucesso!');
-      }
+        fetch('/clientes/excluir/' + id, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                // Adiciona o token CSRF se estiver usando Spring Security
+                'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').getAttribute('content')
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                // Remove a linha da tabela se a exclusão foi bem-sucedida
+                button.closest('tr').remove();
+                // Mostra mensagem de sucesso
+                showAlert('Cliente excluído com sucesso!', 'success');
+            } else {
+                return response.json().then(error => { throw error; });
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao excluir cliente:', error);
+            // Mostra mensagem de erro
+            showAlert('Erro ao excluir cliente: ' + (error.message || 'Erro desconhecido'), 'danger');
+            // Restaura o botão ao estado original
+            button.innerHTML = originalHTML;
+            button.disabled = false;
+        });
     }
+}
 </script>
 </body>
 </html>
