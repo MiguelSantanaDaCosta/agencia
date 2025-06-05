@@ -23,7 +23,10 @@ Este projeto é uma aplicação web de uma agência de viagens, desenvolvida uti
    ```bash
    git clone https://github.com/MiguelSantanaDaCosta/viagensMVC.git
    cd viagensMVC
-   
+2. Certifique-se de que o MySQL está em execução e configure as credenciais no arquivo
+3. Execute a aplicação com Docker Compose
+4. Acessar a Aplicação http://localhost:8080
+
  ## Funcionalidades
 
  - Cadastro, edição e exclusão de destinos 
