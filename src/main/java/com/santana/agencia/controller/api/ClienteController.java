@@ -1,17 +1,17 @@
-package com.santana.agencia.controller;
+package com.santana.agencia.controller.api;
 
-import com.santana.agencia.model.entity.Agencia;
-import com.santana.agencia.service.AgenciaService;
+import com.santana.agencia.model.entity.Cliente;
+import com.santana.agencia.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/agencia")
-public class AgenciaController {
+@RequestMapping("/api/clientes")
+public class ClienteController {
 
     @Autowired
-    private AgenciaService service;
+    private ClienteService service;
 
     @GetMapping
     public ResponseEntity<?> listarTodos() {
@@ -32,10 +32,20 @@ public class AgenciaController {
     }
 
     @PostMapping
-    public ResponseEntity<?> salvar(@RequestBody Agencia agencia) {
+    public ResponseEntity<?> salvar(@RequestBody Cliente cliente) {
         try {
-            Agencia salvo = service.salvar(agencia);
+            Cliente salvo = service.salvar(cliente);
             return ResponseEntity.ok(salvo);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Cliente cliente) {
+        try {
+            Cliente atualizado = service.atualizar(id, cliente);
+            return ResponseEntity.ok(atualizado);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

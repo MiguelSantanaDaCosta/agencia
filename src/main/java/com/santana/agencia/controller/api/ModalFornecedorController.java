@@ -1,4 +1,4 @@
-package com.santana.agencia.controller;
+package com.santana.agencia.controller.api;
 
 import com.santana.agencia.model.entity.ModalFornecedor;
 import com.santana.agencia.service.ModalFornecedorService;

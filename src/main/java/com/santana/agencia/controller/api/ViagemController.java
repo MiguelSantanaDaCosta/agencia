@@ -1,17 +1,17 @@
-package com.santana.agencia.controller;
+package com.santana.agencia.controller.api;
 
-import com.santana.agencia.model.entity.Fornecedor;
-import com.santana.agencia.service.FornecedorService;
+import com.santana.agencia.model.entity.Viagem;
+import com.santana.agencia.service.ViagemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/fornecedores")
-public class FornecedorController {
+@RequestMapping("/api/viagens")
+public class ViagemController {
 
     @Autowired
-    private FornecedorService service;
+    private ViagemService service;
 
     @GetMapping
     public ResponseEntity<?> listarTodos() {
@@ -22,30 +22,20 @@ public class FornecedorController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
+    @GetMapping("/cliente/{clienteId}")
+    public ResponseEntity<?> listarPorCliente(@PathVariable Long clienteId) {
         try {
-            return ResponseEntity.ok(service.buscarPorId(id));
+            return ResponseEntity.ok(service.listarPorCliente(clienteId));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @PostMapping
-    public ResponseEntity<?> salvar(@RequestBody Fornecedor fornecedor) {
+    public ResponseEntity<?> salvar(@RequestBody Viagem viagem) {
         try {
-            Fornecedor salvo = service.salvar(fornecedor);
-            return ResponseEntity.ok(salvo);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Fornecedor fornecedor) {
-        try {
-            Fornecedor atualizado = service.atualizar(id, fornecedor);
-            return ResponseEntity.ok(atualizado);
+            Viagem salva = service.salvar(viagem);
+            return ResponseEntity.ok(salva);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

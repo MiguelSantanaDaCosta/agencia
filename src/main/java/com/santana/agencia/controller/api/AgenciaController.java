@@ -1,17 +1,17 @@
-package com.santana.agencia.controller;
+package com.santana.agencia.controller.api;
 
-import com.santana.agencia.model.entity.Viagem;
-import com.santana.agencia.service.ViagemService;
+import com.santana.agencia.model.entity.Agencia;
+import com.santana.agencia.service.AgenciaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/viagens")
-public class ViagemController {
+@RequestMapping("/api/agencia")
+public class AgenciaController {
 
     @Autowired
-    private ViagemService service;
+    private AgenciaService service;
 
     @GetMapping
     public ResponseEntity<?> listarTodos() {
@@ -22,20 +22,20 @@ public class ViagemController {
         }
     }
 
-    @GetMapping("/cliente/{clienteId}")
-    public ResponseEntity<?> listarPorCliente(@PathVariable Long clienteId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok(service.listarPorCliente(clienteId));
+            return ResponseEntity.ok(service.buscarPorId(id));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @PostMapping
-    public ResponseEntity<?> salvar(@RequestBody Viagem viagem) {
+    public ResponseEntity<?> salvar(@RequestBody Agencia agencia) {
         try {
-            Viagem salva = service.salvar(viagem);
-            return ResponseEntity.ok(salva);
+            Agencia salvo = service.salvar(agencia);
+            return ResponseEntity.ok(salvo);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

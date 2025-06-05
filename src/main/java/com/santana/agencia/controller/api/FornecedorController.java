@@ -1,17 +1,17 @@
-package com.santana.agencia.controller;
+package com.santana.agencia.controller.api;
 
-import com.santana.agencia.model.entity.Cliente;
-import com.santana.agencia.service.ClienteService;
+import com.santana.agencia.model.entity.Fornecedor;
+import com.santana.agencia.service.FornecedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/clientes")
-public class ClienteController {
+@RequestMapping("/api/fornecedores")
+public class FornecedorController {
 
     @Autowired
-    private ClienteService service;
+    private FornecedorService service;
 
     @GetMapping
     public ResponseEntity<?> listarTodos() {
@@ -32,9 +32,9 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ResponseEntity<?> salvar(@RequestBody Cliente cliente) {
+    public ResponseEntity<?> salvar(@RequestBody Fornecedor fornecedor) {
         try {
-            Cliente salvo = service.salvar(cliente);
+            Fornecedor salvo = service.salvar(fornecedor);
             return ResponseEntity.ok(salvo);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -42,9 +42,9 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Cliente cliente) {
+    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Fornecedor fornecedor) {
         try {
-            Cliente atualizado = service.atualizar(id, cliente);
+            Fornecedor atualizado = service.atualizar(id, fornecedor);
             return ResponseEntity.ok(atualizado);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
