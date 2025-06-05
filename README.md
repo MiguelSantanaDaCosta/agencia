@@ -23,3 +23,10 @@ Este projeto é uma aplicação web de uma agência de viagens, desenvolvida uti
    ```bash
    git clone https://github.com/MiguelSantanaDaCosta/viagensMVC.git
    cd viagensMVC
+   
+ ## Funcionalidades
+
+ - Cadastro, edição e exclusão de destinos 
+ - Gerenciamento de reservas
+ - Cadastro de clientes
+ - Visualização de detalhes de viagens
