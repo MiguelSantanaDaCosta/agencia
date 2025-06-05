@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.santana.agencia.controller.web.dto.CriarClienteDto;
 import com.santana.agencia.model.builder.ClienteBuilder;
@@ -46,5 +47,11 @@ public class ClienteWebController {
       System.out.println(err);
       return "redirect:/clientes";
     }
+  }
+
+  @GetMapping("/deletar")
+  public String deletarCliente(@RequestParam Long clienteId) {
+    clienteService.deletar(clienteId);
+    return "redirect:/clientes";
   }
 }
