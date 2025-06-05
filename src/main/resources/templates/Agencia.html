@@ -107,6 +107,49 @@
   </div>
 </div>
 
+<div class="modal fade" id="cadastroViagemModal" tabindex="-1" aria-labelledby="cadastroViagemModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cadastroViagemModalLabel">Cadastrar Nova Viagem</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="formCadastroViagem" th:action="@{/viagens/cadastrar}" th:object="${viagem}" method="post">
+          <div class="mb-3">
+            <label for="destino" class="form-label">Destino</label>
+            <input type="text" class="form-control" id="destino" th:field="*{destino}" required>
+          </div>
+          <div class="mb-3">
+            <label for="preco" class="form-label">Preço (R$)</label>
+            <input type="number" step="0.01" class="form-control" id="preco" th:field="*{preco}" required>
+          </div>
+          <div class="mb-3">
+            <label for="dataInicio" class="form-label">Data de Início</label>
+            <input type="date" class="form-control" id="dataInicio" th:field="*{dataInicio}" required>
+          </div>
+          <div class="mb-3">
+            <label for="dataFim" class="form-label">Data de Fim</label>
+            <input type="date" class="form-control" id="dataFim" th:field="*{dataFim}" required>
+          </div>
+          <div class="mb-3">
+            <label for="vagas" class="form-label">Número de Vagas</label>
+            <input type="number" class="form-control" id="vagas" th:field="*{vagas}" required>
+          </div>
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="status" th:field="*{status}">
+            <label class="form-check-label" for="status">Viagem disponível</label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" form="formCadastroViagem" class="btn btn-primary">Cadastrar Viagem</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="cadastroModal" tabindex="-1" aria-labelledby="cadastroModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -184,6 +227,9 @@
           <li><a class="dropdown-item" data-ordem="asc">Preço: menor primeiro</a></li>
           <li><a class="dropdown-item" data-ordem="desc">Preço: maior primeiro</a></li>
         </ul>
+        <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#cadastroViagemModal">
+          Nova Viagem
+        </button>
       </div>
     </div>
   </div>
